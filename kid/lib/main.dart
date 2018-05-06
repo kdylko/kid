@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 // Copyright 2017 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
@@ -5,10 +6,31 @@
 import 'package:flutter/material.dart';
 // Uncomment lines 7 and 10 to view the visual layout at runtime.
 //import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
+import 'package:spritewidget/spritewidget.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
   runApp(new MyApp());
+}
+
+class MyWidget extends StatefulWidget {
+  @override
+  MyWidgetState createState() => new MyWidgetState();
+}
+
+class MyWidgetState extends State<MyWidget> {
+  NodeWithSize rootNode;
+
+  @override
+  void initState() {
+    super.initState();
+    rootNode = new NodeWithSize(const Size(1024.0, 1024.0));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+  	return new SpriteWidget(rootNode);
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -82,7 +104,7 @@ class MyApp extends StatelessWidget {
         ],
       ),
     );
-
+    
     Widget textSection = new Container(
       padding: const EdgeInsets.all(32.0),
       child: new Text(
@@ -92,6 +114,14 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
         softWrap: true,
       ),
     );
+
+   // Widget menuBar = new CupertinoTabBar(
+   /*   items: <BottomNavigationBarItem> [
+      
+    ],
+      activeColor: CupertinoColors.activeBlue,
+      iconSize: 30.0,
+    ); */
 
     return new MaterialApp(
       title: 'Flutter Demo',
@@ -110,6 +140,7 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
             titleSection,
             buttonSection,
             textSection,
+           
           ],
         ),
       ),
