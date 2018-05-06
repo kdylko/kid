@@ -6,58 +6,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // Uncomment lines 7 and 10 to view the visual layout at runtime.
 //import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
+import 'favouritewidget.dart';
+import 'spriteapp.dart';
+import 'package:spritewidget/spritewidget.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
   runApp(new MyApp());
-}
-
-class FavoriteWidget extends StatefulWidget {
-  @override
-  _FavoriteWidgetState createState() => new _FavoriteWidgetState();
-}
-
-class _FavoriteWidgetState extends State<FavoriteWidget> {
-  bool _isFavorited = true;
-  int _favoriteCount = 41;
-
-  void _toggleFavorite() {
-    setState(() {
-      // If the lake is currently favorited, unfavorite it.
-      if (_isFavorited) {
-        _favoriteCount -= 1;
-        _isFavorited = false;
-        // Otherwise, favorite it.
-      } else {
-        _favoriteCount += 1;
-        _isFavorited = true;
-      }
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    return new Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        new Container(
-          padding: new EdgeInsets.all(0.0),
-          child: new IconButton(
-            icon: (_isFavorited
-                ? new Icon(Icons.star)
-                : new Icon(Icons.star_border)),
-            color: Colors.red[500],
-            onPressed: _toggleFavorite,
-          ),
-        ),
-        new SizedBox(
-          width: 18.0,
-          child: new Container(
-            child: new Text('$_favoriteCount'),
-          ),
-        ),
-      ],
-    );
-  }
 }
 
 
@@ -139,25 +94,48 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
       ),
     );
 
-    return new MaterialApp(
-      title: 'Flutter Demo',
-      home: new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Top Lakes'),
-        ),
-        body: new ListView(
-          children: [
-            new Image.asset(
+
+    Widget demoapp = new Column(
+      children: [
+        new Image.asset(
               'images/lake.jpg',
               width: 600.0,
               height: 240.0,
               fit: BoxFit.cover,
+              ),
+        titleSection,
+        buttonSection,
+        textSection,
+      ]
+    );
+
+    Widget secondtab = new Center(
+      child: new Game(),
+    );
+
+    return new MaterialApp(
+      title: 'Flutter Demo',
+      home: new DefaultTabController(
+        length:3,
+        child: new Scaffold(
+          appBar: new AppBar(
+            bottom: new TabBar(
+              tabs: <Widget>[
+                new Tab(icon: new Icon(Icons.threed_rotation)),
+                new Tab(icon: new Icon(Icons.directions_transit)),
+                new Tab(icon: new Icon(Icons.directions_bike)),
+              ],
             ),
-            titleSection,
-            buttonSection,
-            textSection,
-           
-          ],
+            title: new Text('Top Lakes'),
+          ),
+          body: new TabBarView(
+            children: [
+              demoapp,
+              secondtab,
+              new Icon(Icons.directions_bike),
+
+            ]
+          ),
         ),
       ),
     );
