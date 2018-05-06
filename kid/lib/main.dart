@@ -6,32 +6,60 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // Uncomment lines 7 and 10 to view the visual layout at runtime.
 //import 'package:flutter/rendering.dart' show debugPaintSizeEnabled;
-import 'package:spritewidget/spritewidget.dart';
 
 void main() {
   //debugPaintSizeEnabled = true;
   runApp(new MyApp());
 }
 
-class MyWidget extends StatefulWidget {
+class FavoriteWidget extends StatefulWidget {
   @override
-  MyWidgetState createState() => new MyWidgetState();
+  _FavoriteWidgetState createState() => new _FavoriteWidgetState();
 }
 
-class MyWidgetState extends State<MyWidget> {
-  NodeWithSize rootNode;
+class _FavoriteWidgetState extends State<FavoriteWidget> {
+  bool _isFavorited = true;
+  int _favoriteCount = 41;
 
-  @override
-  void initState() {
-    super.initState();
-    rootNode = new NodeWithSize(const Size(1024.0, 1024.0));
+  void _toggleFavorite() {
+    setState(() {
+      // If the lake is currently favorited, unfavorite it.
+      if (_isFavorited) {
+        _favoriteCount -= 1;
+        _isFavorited = false;
+        // Otherwise, favorite it.
+      } else {
+        _favoriteCount += 1;
+        _isFavorited = true;
+      }
+    });
   }
-
   @override
   Widget build(BuildContext context) {
-  	return new SpriteWidget(rootNode);
+    return new Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        new Container(
+          padding: new EdgeInsets.all(0.0),
+          child: new IconButton(
+            icon: (_isFavorited
+                ? new Icon(Icons.star)
+                : new Icon(Icons.star_border)),
+            color: Colors.red[500],
+            onPressed: _toggleFavorite,
+          ),
+        ),
+        new SizedBox(
+          width: 18.0,
+          child: new Container(
+            child: new Text('$_favoriteCount'),
+          ),
+        ),
+      ],
+    );
   }
 }
+
 
 class MyApp extends StatelessWidget {
   @override
@@ -62,11 +90,7 @@ class MyApp extends StatelessWidget {
               ],
             ),
           ),
-          new Icon(
-            Icons.star,
-            color: Colors.red[500],
-          ),
-          new Text('41'),
+          new FavoriteWidget(),
         ],
       ),
     );
@@ -114,14 +138,6 @@ Lake Oeschinen lies at the foot of the Blüemlisalp in the Bernese Alps. Situate
         softWrap: true,
       ),
     );
-
-   // Widget menuBar = new CupertinoTabBar(
-   /*   items: <BottomNavigationBarItem> [
-      
-    ],
-      activeColor: CupertinoColors.activeBlue,
-      iconSize: 30.0,
-    ); */
 
     return new MaterialApp(
       title: 'Flutter Demo',
